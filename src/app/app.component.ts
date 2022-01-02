@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
 
     constructor(
-        private dataHandler: DataHandlerService, // фасад для работы с данными
+      private dataHandler: DataHandlerService, // фасад для работы с данными
     ) {
     }
 
@@ -37,17 +37,29 @@ export class AppComponent implements OnInit {
         this.selectedCategory = category;
 
         this.dataHandler.searchTasks(
-            this.selectedCategory,
-            null,
-            null,
-            null
+          this.selectedCategory,
+          null,
+          null,
+          null
         ).subscribe(tasks => {
             this.tasks = tasks;
         });
 
     }
 
+    // обновление задачи
     private onUpdateTask(task: Task) {
-        console.log(task);
+
+        this.dataHandler.updateTask(task).subscribe(() => {
+            this.dataHandler.searchTasks(
+              this.selectedCategory,
+              null,
+              null,
+              null
+            ).subscribe(tasks => {
+                this.tasks = tasks;
+            });
+        });
+
     }
 }
