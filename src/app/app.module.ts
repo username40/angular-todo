@@ -18,34 +18,34 @@ import {MatSelectModule} from "@angular/material/select";
 import { ConfirmDialogComponent } from './dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CategoriesComponent,
-    TasksComponent,
-    EditTaskDialogComponent,
-    ConfirmDialogComponent
-  ],
-  imports: [
-    BrowserModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatOptionModule,
-    MatSelectModule
-  ],
-  providers: [],
-  entryComponents: [
-    EditTaskDialogComponent,
-    ConfirmDialogComponent
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        CategoriesComponent,
+        TasksComponent,
+        EditTaskDialogComponent,
+        ConfirmDialogComponent
+    ],
+    imports: [
+        BrowserModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatOptionModule,
+        MatSelectModule
+    ],
+    providers: [],
+    entryComponents: [
+        EditTaskDialogComponent,
+        ConfirmDialogComponent
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

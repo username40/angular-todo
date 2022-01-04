@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
 
     constructor(
-      private dataHandler: DataHandlerService, // фасад для работы с данными
+        private dataHandler: DataHandlerService, // фасад для работы с данными
     ) {
     }
 
@@ -37,10 +37,10 @@ export class AppComponent implements OnInit {
         this.selectedCategory = category;
 
         this.dataHandler.searchTasks(
-          this.selectedCategory,
-          null,
-          null,
-          null
+            this.selectedCategory,
+            null,
+            null,
+            null
         ).subscribe(tasks => {
             this.tasks = tasks;
         });
@@ -52,10 +52,10 @@ export class AppComponent implements OnInit {
 
         this.dataHandler.updateTask(task).subscribe(() => {
             this.dataHandler.searchTasks(
-              this.selectedCategory,
-              null,
-              null,
-              null
+                this.selectedCategory,
+                null,
+                null,
+                null
             ).subscribe(tasks => {
                 this.tasks = tasks;
             });
@@ -68,10 +68,10 @@ export class AppComponent implements OnInit {
 
         this.dataHandler.deleteTask(task.id).subscribe(() => {
             this.dataHandler.searchTasks(
-              this.selectedCategory,
-              null,
-              null,
-              null
+                this.selectedCategory,
+                null,
+                null,
+                null
             ).subscribe(tasks => {
                 this.tasks = tasks;
             });
