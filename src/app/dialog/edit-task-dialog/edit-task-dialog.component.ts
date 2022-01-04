@@ -15,6 +15,7 @@ import {DataHandlerService} from '../../service/data-handler.service';
 export class EditTaskDialogComponent implements OnInit {
 
   private categories: Category[];
+  private priorities: Priority[];
 
 
   private dialogTitle: string; // заголовок окна
@@ -24,6 +25,7 @@ export class EditTaskDialogComponent implements OnInit {
   // чтобы изменения не сказывались на самой задаче и можно было отменить изменения
   private tmpTitle: string;
   private tmpCategory: Category;
+  private tmpPriority: Priority;
 
 
   constructor(
@@ -42,9 +44,11 @@ export class EditTaskDialogComponent implements OnInit {
     // чтобы можно было отменить изменения, а то будут сразу записываться в задачу)
     this.tmpTitle = this.task.title;
     this.tmpCategory = this.task.category;
+    this.tmpPriority = this.task.priority;
 
 
     this.dataHandler.getAllCategories().subscribe(items => this.categories = items);
+    this.dataHandler.getAllPriorities().subscribe(items => this.priorities = items);
 
   }
 
@@ -54,6 +58,7 @@ export class EditTaskDialogComponent implements OnInit {
     // считываем все значения для сохранения в поля задачи
     this.task.title = this.tmpTitle;
     this.task.category = this.tmpCategory;
+    this.task.priority = this.tmpPriority;
 
 
 
