@@ -1,12 +1,4 @@
-import {
-  // AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DataHandlerService} from "../../service/data-handler.service";
 import {Task} from 'src/app/model/Task';
 import {MatTableDataSource} from "@angular/material";
@@ -14,6 +6,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-tasks',
@@ -31,6 +24,14 @@ export class TasksComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) private sort: MatSort;
 
+
+  @Output()
+  deleteTask = new EventEmitter<Task>();
+
+  @Output()
+  updateTask = new EventEmitter<Task>();
+
+
   private tasks: Task[];
 
   // текущие задачи для отображения на странице
@@ -40,11 +41,11 @@ export class TasksComponent implements OnInit {
     this.fillTable();
   }
 
-  @Output()
-  updateTask = new EventEmitter<Task>();
+  constructor(
+    private dataHandler: DataHandlerService, // доступ к данным
+    private dialog: MatDialog, // работа с диалоговым окном
 
-  constructor(private dataHandler: DataHandlerService,
-              private dialog: MatDialog) {
+  ) {
   }
 
   ngOnInit() {
@@ -57,7 +58,7 @@ export class TasksComponent implements OnInit {
   }
 
 
-  toggleTaskCompleted(task: Task): void {
+  toggleTaskCompleted(task: Task) {
     task.completed = !task.completed;
   }
 
@@ -112,6 +113,7 @@ export class TasksComponent implements OnInit {
       }
     };
 
+
   }
 
   private addTableObjects(): void {
@@ -119,18 +121,32 @@ export class TasksComponent implements OnInit {
     this.dataSource.paginator = this.paginator; // обновить компонент постраничности (кол-во записей, страниц)
   }
 
-  private onClickTask(task: Task) {
-    this.updateTask.emit(task);
-  }
-
+  // диалоговое редактирования для добавления задачи
   private openEditTaskDialog(task: Task): void {
+
+    // открытие диалогового окна
     const dialogRef = this.dialog.open(EditTaskDialogComponent, {
-      data: [task, 'редактирование задачи'],
+      data: [task, 'Редактирование задачи'],
       autoFocus: false
-    })
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       // обработка результатов
-    })
+
+
+      if (result === 'delete') {
+        this.deleteTask.emit(task);
+        return;
+      }
+
+      if (result as Task) { // если нажали ОК и есть результат
+        this.updateTask.emit(task);
+        return;
+      }
+
+    });
   }
+
+
+
 }

@@ -65,21 +65,28 @@
 <mat-dialog-actions>
 
 
-	<div class="col-md-5 col-12">
 
-		<button
-				mat-raised-button color="primary"
-				(click)="onConfirm()"
-				[disabled]="inputTitle.value.trim().length==0">
-			<!-- если пустой текст - кнопка "Сохранить" будет недоступна -->
-			Сохранить
-		</button>
+	<button
+			mat-raised-button color="primary"
+			(click)="onConfirm()"
+			[disabled]="inputTitle.value.trim().length==0">  <!-- если пустой текст - кнопка "Сохранить" будет недоступна -->
+		Сохранить
+	</button>
 
 
-		<button mat-raised-button (click)="onCancel()">Отмена</button>
+	<button mat-raised-button (click)="onCancel()">Отмена</button>
 
-	</div>
 
+
+	<button
+			mat-button
+			class="red"
+			(click)="delete()"
+
+	>
+		Удалить задачу
+
+	</button>
 
 
 </mat-dialog-actions>

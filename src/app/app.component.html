@@ -1,8 +1,9 @@
 <div class="wrapper ">
 
     <app-categories
-            (selectCategory)="onSelectCategory($event)"
-                    [categories]="categories"></app-categories>
+        (selectCategory)="onSelectCategory($event)"
+
+        [categories]="categories"></app-categories>
 
 
     <div class="main-panel">
@@ -84,8 +85,9 @@
                     <div class="col-12">
 
                         <app-tasks
-                                [tasks]="tasks"
-                                (updateTask)="onUpdateTask($event)"
+                            (updateTask)="onUpdateTask($event)"
+                            (deleteTask)="onDeleteTask($event)"
+                            [tasks]="tasks"
 
 
                         ></app-tasks>
