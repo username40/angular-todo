@@ -17,11 +17,11 @@
             (keydown.enter)="onConfirm()"> <!-- по нажатию на enter можем сразу сохранить задачу -->
 
         <button
-                *ngIf="tmpTitle.trim().length > 0"
+            *ngIf="tmpTitle.trim().length > 0"
 
-                mat-button matSuffix mat-icon-button aria-label="Clear"
+            mat-button matSuffix mat-icon-button aria-label="Clear"
 
-                (click)="tmpTitle= ''" class="size25">
+            (click)="tmpTitle= ''" class="size25">
 
             <mat-icon>clear</mat-icon>
         </button>
@@ -61,13 +61,13 @@
     <mat-form-field>
 
         <input
-                matInput placeholder="Укажите срок выполнения" #inputDate
-                readonly="true"
+            matInput placeholder="Укажите срок выполнения" #inputDate
+            readonly="true"
 
-                [matDatepicker]="picker"
-                [(ngModel)]="tmpDate"
+            [matDatepicker]="picker"
+            [(ngModel)]="tmpDate"
 
-                (click)="picker.open()">
+            (click)="picker.open()">
 
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <!-- иконка календаря (для открытия календаря) -->
@@ -76,11 +76,11 @@
 
         <!--кнопка очистки даты -->
         <button
-                *ngIf="inputDate.value.trim().length > 0"
+            *ngIf="inputDate.value.trim().length > 0"
 
-                mat-button matSuffix mat-icon-button aria-label="Clear"
+            mat-button matSuffix mat-icon-button aria-label="Clear"
 
-                (click)="tmpDate = null" class="size25">
+            (click)="tmpDate = null" class="size25">
 
             <mat-icon>clear</mat-icon>
 
@@ -100,9 +100,9 @@
     <div class="col-md-5 col-12" >
 
         <button
-                mat-raised-button color="primary"
-                (click)="onConfirm()"
-                [disabled]="inputTitle.value.trim().length==0">  <!-- если пустой текст - кнопка "Сохранить" будет недоступна -->
+            mat-raised-button color="primary"
+            (click)="onConfirm()"
+            [disabled]="inputTitle.value.trim().length==0">  <!-- если пустой текст - кнопка "Сохранить" будет недоступна -->
             Сохранить
         </button>
 
@@ -114,38 +114,38 @@
 
     <!--  возможные операции над задачей-->
     <div
-            class="col-md-7 col-12 text-right"
+        class="col-md-7 col-12 text-right"
 
 
 
     >
 
         <button
-                mat-button class="green"
-                *ngIf="!task.completed"
-                (click)="complete()"
+            mat-button class="green"
+            *ngIf="!task.completed"
+            (click)="complete()"
 
         >
-            Завершить задачу
+            Завершить
         </button>
 
         <button
-                mat-button class="green"
-                (click)="activate()"
-                *ngIf="task.completed">
+            mat-button class="green"
+            (click)="activate()"
+            *ngIf="task.completed">
 
             Активировать
 
         </button>
 
         <button
-                mat-button
+            mat-button
 
-                class="red"
-                (click)="delete()"
+            class="red"
+            (click)="delete()"
 
         >
-            Удалить задачу
+            Удалить
 
         </button>
 

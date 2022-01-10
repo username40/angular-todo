@@ -16,10 +16,10 @@ import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component
 export class EditTaskDialogComponent implements OnInit {
 
   constructor(
-      private dialogRef: MatDialogRef<EditTaskDialogComponent>, // // для возможности работы с текущим диалог. окном
-      @Inject(MAT_DIALOG_DATA) private data: [Task, string], // данные, которые передали в диалоговое окно
-      private dataHandler: DataHandlerService, // ссылка на сервис для работы с данными
-      private dialog: MatDialog // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
+    private dialogRef: MatDialogRef<EditTaskDialogComponent>, // // для возможности работы с текущим диалог. окном
+    @Inject(MAT_DIALOG_DATA) private data: [Task, string], // данные, которые передали в диалоговое окно
+    private dataHandler: DataHandlerService, // ссылка на сервис для работы с данными
+    private dialog: MatDialog // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
   ) {
   }
 
