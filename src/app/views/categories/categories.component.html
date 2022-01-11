@@ -29,15 +29,15 @@
             <div class="line"></div>
 
             <li
-                *ngFor="let category of categories; let index = index " [class.active]="category === selectedCategory"
+                    *ngFor="let category of categories; let index = index " [class.active]="category === selectedCategory"
 
-                (click)="showTasksByCategory(category)"
+                    (click)="showTasksByCategory(category)"
 
-                (mouseleave)="showEditIcon(null)"
-                (mouseenter)="showEditIcon(index)"
+                    (mouseleave)="showEditIcon(null)"
+                    (mouseenter)="showEditIcon(index)"
 
 
-                class="nav-item pointer"
+                    class="nav-item pointer"
 
             >
                 <a class="nav-link">
@@ -50,10 +50,10 @@
                     <span class="edit-category-icon-area">
 
             <mat-icon
-                *ngIf="indexMouseMove === index"
-                (click)="$event.stopPropagation(); openEditDialog(category)"
+                    *ngIf="indexMouseMove === index"
+                    (click)="$event.stopPropagation(); openEditDialog(category)"
 
-                class="edit-category-icon"
+                    class="edit-category-icon"
 
 
 

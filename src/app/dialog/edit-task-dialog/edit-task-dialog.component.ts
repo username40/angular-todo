@@ -15,13 +15,7 @@ import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component
 // редактирование/создание задачи
 export class EditTaskDialogComponent implements OnInit {
 
-  constructor(
-    private dialogRef: MatDialogRef<EditTaskDialogComponent>, // // для возможности работы с текущим диалог. окном
-    @Inject(MAT_DIALOG_DATA) private data: [Task, string], // данные, которые передали в диалоговое окно
-    private dataHandler: DataHandlerService, // ссылка на сервис для работы с данными
-    private dialog: MatDialog // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
-  ) {
-  }
+  private tmpCategory: Category;
 
   private categories: Category[];
   private priorities: Priority[];
@@ -33,10 +27,15 @@ export class EditTaskDialogComponent implements OnInit {
   // чтобы изменения не сказывались на самой задаче и можно было отменить изменения
   private tmpTitle: string;
   private tmpPriority: Priority;
-  private tmpCategory: Category;
   private tmpDate: Date;
 
-
+  constructor(
+      private dialogRef: MatDialogRef<EditTaskDialogComponent>, // // для возможности работы с текущим диалог. окном
+      @Inject(MAT_DIALOG_DATA) private data: [Task, string], // данные, которые передали в диалоговое окно
+      private dataHandler: DataHandlerService, // ссылка на сервис для работы с данными
+      private dialog: MatDialog // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
+  ) {
+  }
 
   ngOnInit() {
     this.task = this.data[0]; // задача для редактирования/создания
@@ -50,8 +49,8 @@ export class EditTaskDialogComponent implements OnInit {
     this.tmpCategory = this.task.category;
     this.tmpDate = this.task.date;
 
-    this.dataHandler.getAllCategories().subscribe( items => this.categories = items);
-    this.dataHandler.getAllPriorities().subscribe( items => this.priorities = items);
+    this.dataHandler.getAllCategories().subscribe(items => this.categories = items);
+    this.dataHandler.getAllPriorities().subscribe(items => this.priorities = items);
 
   }
 

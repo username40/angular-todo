@@ -15,13 +15,14 @@ import {FormsModule} from "@angular/forms";
 import {MatIconModule} from "@angular/material/icon";
 import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
-import { ConfirmDialogComponent } from './dialog/confirm-dialog/confirm-dialog.component';
+import {ConfirmDialogComponent} from './dialog/confirm-dialog/confirm-dialog.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import { TaskDatePipe } from './pipe/task-date.pipe';
+import {TaskDatePipe} from './pipe/task-date.pipe';
 
 import {registerLocaleData} from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { EditCategoryDialogComponent } from './dialog/edit-category-dialog/edit-category-dialog.component';
 
 registerLocaleData(localeRu);
 
@@ -32,7 +33,8 @@ registerLocaleData(localeRu);
         TasksComponent,
         EditTaskDialogComponent,
         ConfirmDialogComponent,
-        TaskDatePipe
+        TaskDatePipe,
+        EditCategoryDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -55,7 +57,8 @@ registerLocaleData(localeRu);
     providers: [],
     entryComponents: [
         EditTaskDialogComponent,
-        ConfirmDialogComponent
+        ConfirmDialogComponent,
+        EditCategoryDialogComponent
     ],
     bootstrap: [AppComponent]
 })

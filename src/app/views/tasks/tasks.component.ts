@@ -8,6 +8,7 @@ import {EditTaskDialogComponent} from "../../dialog/edit-task-dialog/edit-task-d
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialogComponent} from "../../dialog/confirm-dialog/confirm-dialog.component";
 import {Category} from "../../model/Category";
+import {Priority} from "../../model/Priority";
 
 @Component({
     selector: 'app-tasks',
@@ -17,8 +18,8 @@ import {Category} from "../../model/Category";
 export class TasksComponent implements OnInit {
 
 
-    // поля для таблицы (те, что отображают данные из задачи - должны совпадать с названиями переменных класса)
-    private displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select'];
+    @Output()
+    deleteTask = new EventEmitter<Task>();
     private dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
 
     // ссылки на компоненты таблицы
@@ -27,15 +28,31 @@ export class TasksComponent implements OnInit {
 
 
     @Output()
-    deleteTask = new EventEmitter<Task>();
+    selectCategory = new EventEmitter<Category>(); // нажали на категорию из списка задач
 
     @Output()
     updateTask = new EventEmitter<Task>();
 
     @Output()
-    selectCategory = new EventEmitter<Category>(); // нажали на категорию из списка задач
+    filterByTitle = new EventEmitter<string>();
+
+    @Output()
+    filterByStatus = new EventEmitter<boolean>();
+
+    @Output()
+    filterByPriority = new EventEmitter<Priority>();
+
+    // поиск
+    private searchTaskText: string; // текущее значение для поиска задач
+    private selectedStatusFilter: boolean = null;   // по-умолчанию будут показываться задачи по всем статусам (решенные и нерешенные)
+    private selectedPriorityFilter: Priority = null;   // по-умолчанию будут показываться задачи по всем приоритетам
 
 
+
+    // поля для таблицы (те, что отображают данные из задачи - должны совпадать с названиями переменных класса)
+    private displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select'];
+
+    private priorities: Priority[]; // список приоритетов (для фильтрации задач)
     private tasks: Task[];
 
     // текущие задачи для отображения на странице
@@ -45,9 +62,14 @@ export class TasksComponent implements OnInit {
         this.fillTable();
     }
 
+    @Input('priorities')
+    set setPriorities(priorities: Priority[]) {
+        this.priorities = priorities;
+    }
+
     constructor(
-      private dataHandler: DataHandlerService, // доступ к данным
-      private dialog: MatDialog, // работа с диалоговым окном
+        private dataHandler: DataHandlerService, // доступ к данным
+        private dialog: MatDialog, // работа с диалоговым окном
 
     ) {
     }
@@ -164,7 +186,10 @@ export class TasksComponent implements OnInit {
     private openDeleteDialog(task: Task) {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             maxWidth: '500px',
-            data: {dialogTitle: 'Подтвердите действие', message: `Вы действительно хотите удалить задачу: "${task.title}"?`},
+            data: {
+                dialogTitle: 'Подтвердите действие',
+                message: `Вы действительно хотите удалить задачу: "${task.title}"?`
+            },
             autoFocus: false
         });
 
@@ -183,6 +208,32 @@ export class TasksComponent implements OnInit {
 
     private onSelectCategory(category: Category) {
         this.selectCategory.emit(category);
+    }
+
+    // фильтрация по названию
+    private onFilterByTitle() {
+        this.filterByTitle.emit(this.searchTaskText);
+    }
+
+    // фильтрация по статусу
+    private onFilterByStatus(value: boolean) {
+
+        // на всякий случай проверяем изменилось ли значение (хотя сам UI компонент должен это делать)
+        if (value !== this.selectedStatusFilter) {
+            this.selectedStatusFilter = value;
+            this.filterByStatus.emit(this.selectedStatusFilter);
+        }
+    }
+
+
+    // фильтрация по приоритету
+    private onFilterByPriority(value: Priority) {
+
+        // на всякий случай проверяем изменилось ли значение (хотя сам UI компонент должен это делать)
+        if (value !== this.selectedPriorityFilter) {
+            this.selectedPriorityFilter = value;
+            this.filterByPriority.emit(this.selectedPriorityFilter);
+        }
     }
 
 
