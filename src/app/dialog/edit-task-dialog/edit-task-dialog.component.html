@@ -17,11 +17,11 @@
             matInput> <!-- по нажатию на enter можем сразу сохранить задачу -->
 
         <button
-                (click)="tmpTitle= ''"
+            (click)="tmpTitle= ''"
 
-                *ngIf="tmpTitle.trim().length > 0" aria-label="Clear" class="size25" mat-button
+            *ngIf="tmpTitle.trim().length > 0" aria-label="Clear" class="size25" mat-button
 
-                mat-icon-button matSuffix>
+            mat-icon-button matSuffix>
 
             <mat-icon>clear</mat-icon>
         </button>
@@ -76,11 +76,11 @@
 
         <!--кнопка очистки даты -->
         <button
-                (click)="tmpDate = null"
+            (click)="tmpDate = null"
 
-                *ngIf="inputDate.value.trim().length > 0" aria-label="Clear" class="size25" mat-button
+            *ngIf="inputDate.value.trim().length > 0" aria-label="Clear" class="size25" mat-button
 
-                mat-icon-button matSuffix>
+            mat-icon-button matSuffix>
 
             <mat-icon>clear</mat-icon>
 
@@ -99,9 +99,9 @@
     <div class="col-md-5 col-12">
 
         <button
-                (click)="onConfirm()" [disabled]="inputTitle.value.trim().length==0"
-                color="primary"
-                mat-raised-button>  <!-- если пустой текст - кнопка "Сохранить" будет недоступна -->
+            (click)="onConfirm()" [disabled]="inputTitle.value.trim().length==0"
+            color="primary"
+            mat-raised-button>  <!-- если пустой текст - кнопка "Сохранить" будет недоступна -->
             Сохранить
         </button>
 
@@ -113,34 +113,36 @@
 
     <!--  возможные операции над задачей-->
     <div
-            class="col-md-7 col-12 text-right"
+        class="col-md-7 col-12 text-right"
 
 
     >
 
         <button
-                (click)="complete()" *ngIf="!task.completed"
-                class="green"
-                mat-button
+            (click)="complete()" *ngIf="!task.completed && canActivateDesactivate()"
+            class="green"
+            mat-button
 
         >
             Завершить
         </button>
 
         <button
-                (click)="activate()" *ngIf="task.completed"
-                class="green"
-                mat-button>
+            (click)="activate()" *ngIf="task.completed && canActivateDesactivate()"
+            class="green"
+            mat-button>
 
             Активировать
 
         </button>
 
         <button
-                (click)="delete()"
+            *ngIf="canDelete()"
 
-                class="red"
-                mat-button
+            (click)="delete()"
+
+            class="red"
+            mat-button
 
         >
             Удалить
