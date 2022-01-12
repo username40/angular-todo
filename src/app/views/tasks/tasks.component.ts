@@ -88,7 +88,7 @@ export class TasksComponent implements OnInit {
 
         // датасорс обязательно нужно создавать для таблицы, в него присваивается любой источник (БД, массивы, JSON и пр.)
         this.dataSource = new MatTableDataSource();
-        this.fillTable(); // заполняем таблицы данными (задачи) и всеми метаданными
+        this.onSelectCategory(null);
     }
 
 

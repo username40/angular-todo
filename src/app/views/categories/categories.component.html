@@ -73,6 +73,9 @@
             <!-- разделитель-->
             <div class="line"></div>
 
+            <div *ngIf="categories.length === 0" ><p class="not-found">Ничего не найдено</p></div>
+
+
             <li
                 (click)="showTasksByCategory(category)" (mouseenter)="showEditIcon(index)"
 
