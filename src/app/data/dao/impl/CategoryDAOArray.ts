@@ -16,7 +16,20 @@ export class CategoryDAOArray implements CategoryDAO {
 
 
     add(category: Category): Observable<Category> {
-        return undefined;
+
+        // если id пустой - генерируем его
+        if (category.id === null || category.id === 0) {
+            category.id = this.getLastIdCategory();
+        }
+
+        TestData.categories.push(category);
+
+        return of(category);
+    }
+
+    // находит последний id (чтобы потом вставить новую запись с id, увеличенным на 1) - в реальной БД это происходит автоматически
+    private getLastIdCategory(): number {
+        return Math.max.apply(Math, TestData.categories.map(c => c.id)) + 1;
     }
 
     delete(id: number): Observable<Category> {
@@ -45,9 +58,14 @@ export class CategoryDAOArray implements CategoryDAO {
     }
 
 
+    // поиск категорий по названию
     search(title: string): Observable<Category[]> {
-        return undefined;
+
+        return of(TestData.categories.filter(
+          cat => cat.title.toUpperCase().includes(title.toUpperCase()))
+        .sort((c1, c2) => c1.title.localeCompare(c2.title)));
     }
+
 
 
 }

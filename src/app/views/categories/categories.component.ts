@@ -35,11 +35,15 @@ export class CategoriesComponent implements OnInit {
     @Output()
     addCategory = new EventEmitter<string>(); // передаем только название новой категории
 
-
+    // поиск категории
+    @Output()
+    searchCategory = new EventEmitter<string>(); // передаем строку для поиска
 
 
     // для отображения иконки редактирования при наведении на категорию
     private indexMouseMove: number;
+    private searchCategoryTitle: string; // текущее значение для поиска категорий
+
 
     constructor(
       private dataHandler: DataHandlerService,
@@ -102,7 +106,10 @@ export class CategoriesComponent implements OnInit {
     // диалоговое окно для добавления категории
     private openAddDialog() {
 
-        const dialogRef = this.dialog.open(EditCategoryDialogComponent, {data: ['', 'Добавление категории', OperType.ADD], width: '400px'});
+        const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
+            data: ['', 'Добавление категории', OperType.ADD],
+            width: '400px'
+        });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -110,5 +117,18 @@ export class CategoriesComponent implements OnInit {
             }
         });
     }
+
+    // поиск категории
+    private search() {
+
+
+        if (this.searchCategoryTitle == null ) {
+            return;
+        }
+
+        this.searchCategory.emit(this.searchCategoryTitle);
+
+    }
+
 
 }

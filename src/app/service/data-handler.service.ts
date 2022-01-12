@@ -73,4 +73,9 @@ export class DataHandlerService {
     }
 
 
+    searchCategories(title: string): Observable<Category[]> {
+        return this.categoryDaoArray.search(title);
+    }
+
+
 }

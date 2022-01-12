@@ -21,6 +21,8 @@ export class AppComponent implements OnInit {
 
     // поиск
     private searchTaskText = ''; // текущее значение для поиска задач
+    private searchCategoryText = ''; // текущее значение для поиска категорий
+
 
     // фильтрация
     private priorityFilter: Priority;
@@ -54,14 +56,14 @@ export class AppComponent implements OnInit {
     private onDeleteCategory(category: Category) {
         this.dataHandler.deleteCategory(category.id).subscribe(cat => {
             this.selectedCategory = null; // открываем категорию "Все"
-            this.onSelectCategory(this.selectedCategory);
+            this.onSelectCategory(null);
         });
     }
 
     // обновлении категории
     private onUpdateCategory(category: Category) {
         this.dataHandler.updateCategory(category).subscribe(() => {
-            this.onSelectCategory(this.selectedCategory);
+            this.onSearchCategory(this.searchCategoryText);
         });
     }
 
@@ -131,5 +133,15 @@ export class AppComponent implements OnInit {
 
     private updateCategories() {
         this.dataHandler.getAllCategories().subscribe(categories => this.categories = categories);
+    }
+
+    // поиск категории
+    private onSearchCategory(title: string) {
+
+        this.searchCategoryText = title;
+
+        this.dataHandler.searchCategories(title).subscribe(categories => {
+            this.categories = categories;
+        });
     }
 }
