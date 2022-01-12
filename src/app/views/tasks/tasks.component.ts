@@ -17,15 +17,16 @@ import {Priority} from "../../model/Priority";
 })
 export class TasksComponent implements OnInit {
 
-
-    @Output()
-    deleteTask = new EventEmitter<Task>();
     private dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
+
 
     // ссылки на компоненты таблицы
     @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
     @ViewChild(MatSort, {static: false}) private sort: MatSort;
 
+
+    @Output()
+    deleteTask = new EventEmitter<Task>();
 
     @Output()
     selectCategory = new EventEmitter<Category>(); // нажали на категорию из списка задач
@@ -41,6 +42,9 @@ export class TasksComponent implements OnInit {
 
     @Output()
     filterByPriority = new EventEmitter<Priority>();
+
+    @Output()
+    addTask = new EventEmitter<Task>();
 
     // поиск
     private searchTaskText: string; // текущее значение для поиска задач
@@ -67,9 +71,12 @@ export class TasksComponent implements OnInit {
         this.priorities = priorities;
     }
 
+    @Input()
+    selectedCategory: Category;
+
     constructor(
-        private dataHandler: DataHandlerService, // доступ к данным
-        private dialog: MatDialog, // работа с диалоговым окном
+      private dataHandler: DataHandlerService, // доступ к данным
+      private dialog: MatDialog, // работа с диалоговым окном
 
     ) {
     }
@@ -234,6 +241,22 @@ export class TasksComponent implements OnInit {
             this.selectedPriorityFilter = value;
             this.filterByPriority.emit(this.selectedPriorityFilter);
         }
+    }
+
+    // диалоговое окно для добавления задачи
+    private openAddTaskDialog() {
+
+        // то же самое, что и при редактировании, но только передаем пустой объект Task
+        const task = new Task(null, '', false, null, this.selectedCategory);
+
+        const dialogRef = this.dialog.open(EditTaskDialogComponent, {data: [task, 'Добавление задачи']});
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) { // если нажали ОК и есть результат
+                this.addTask.emit(task);
+            }
+        });
+
     }
 
 

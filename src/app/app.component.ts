@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
 
 
     constructor(
-        private dataHandler: DataHandlerService, // фасад для работы с данными
+      private dataHandler: DataHandlerService, // фасад для работы с данными
     ) {
     }
 
@@ -46,18 +46,11 @@ export class AppComponent implements OnInit {
 
         this.selectedCategory = category;
 
-        this.dataHandler.searchTasks(
-            this.selectedCategory,
-            null,
-            null,
-            null
-        ).subscribe(tasks => {
-            this.tasks = tasks;
-        });
+        this.updateTasks();
 
     }
-	
-	 // удаление категории
+
+    // удаление категории
     private onDeleteCategory(category: Category) {
         this.dataHandler.deleteCategory(category.id).subscribe(cat => {
             this.selectedCategory = null; // открываем категорию "Все"
@@ -75,34 +68,19 @@ export class AppComponent implements OnInit {
     // обновление задачи
     private onUpdateTask(task: Task) {
 
-       this.updateTasks();
+        this.dataHandler.updateTask(task).subscribe(cat => {
+            this.updateTasks()
+        });
 
     }
 
-  // удаление задачи
+    // удаление задачи
     private onDeleteTask(task: Task) {
 
         this.dataHandler.deleteTask(task.id).subscribe(cat => {
             this.updateTasks()
         });
     }
-
-    /*
-    // удаление категории
-    private onDeleteCategory(category: Category) {
-        this.dataHandler.deleteCategory(category.id).subscribe(cat => {
-            this.selectedCategory = null; // открываем категорию "Все"
-            this.onSelectCategory(this.selectedCategory);
-        });
-    }*/
-
-    /*
-    // обновлении категории
-    private onUpdateCategory(category: Category) {
-        this.dataHandler.updateCategory(category).subscribe(() => {
-            this.onSelectCategory(this.selectedCategory);
-        });
-    }*/
 
 
     // поиск задач
@@ -125,13 +103,24 @@ export class AppComponent implements OnInit {
 
     private updateTasks() {
         this.dataHandler.searchTasks(
-            this.selectedCategory,
-            this.searchTaskText,
-            this.statusFilter,
-            this.priorityFilter
+          this.selectedCategory,
+          this.searchTaskText,
+          this.statusFilter,
+          this.priorityFilter
         ).subscribe((tasks: Task[]) => {
             this.tasks = tasks;
         });
     }
 
+
+    // добавление задачи
+    private onAddTask(task: Task) {
+
+        this.dataHandler.addTask(task).subscribe(result => {
+
+            this.updateTasks();
+
+        });
+
+    }
 }
