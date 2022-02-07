@@ -32,10 +32,10 @@ export class EditTaskDialogComponent implements OnInit {
   private tmpDate: Date;
 
   constructor(
-    private dialogRef: MatDialogRef<EditTaskDialogComponent>, // // для возможности работы с текущим диалог. окном
-    @Inject(MAT_DIALOG_DATA) private data: [Task, string, OperType], // данные, которые передали в диалоговое окно
-    private dataHandler: DataHandlerService, // ссылка на сервис для работы с данными
-    private dialog: MatDialog // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
+      private dialogRef: MatDialogRef<EditTaskDialogComponent>, // // для возможности работы с текущим диалог. окном
+      @Inject(MAT_DIALOG_DATA) private data: [Task, string, OperType], // данные, которые передали в диалоговое окно
+      private dataHandler: DataHandlerService, // ссылка на сервис для работы с данными
+      private dialog: MatDialog // для открытия нового диалогового окна (из текущего) - например для подтверждения удаления
   ) {
   }
 
@@ -50,7 +50,6 @@ export class EditTaskDialogComponent implements OnInit {
     this.tmpPriority = this.task.priority;
     this.tmpCategory = this.task.category;
     this.tmpDate = this.task.date;
-
 
 
     this.dataHandler.getAllCategories().subscribe(items => this.categories = items);
@@ -80,7 +79,7 @@ export class EditTaskDialogComponent implements OnInit {
   }
 
   // нажали Удалить
-  private delete() {
+  private delete(): void {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: '500px',
@@ -99,13 +98,13 @@ export class EditTaskDialogComponent implements OnInit {
   }
 
   // нажали Выполнить (завершить) задачу
-  private complete() {
+  private complete(): void {
     this.dialogRef.close('complete');
 
   }
 
   // делаем статус задачи "незавершенным" (активируем)
-  private activate() {
+  private activate(): void {
     this.dialogRef.close('activate');
   }
 

@@ -1,21 +1,23 @@
-import {TaskDAO} from "../interface/TaskDAO";
-import {Category} from "../../../model/Category";
-import {Observable, of} from "rxjs";
-import {Priority} from "../../../model/Priority";
-import {Task} from 'src/app/model/Task';
-import {TestData} from "../../TestData";
+import {TestData} from '../../TestData';
+import {TaskDAO} from '../interface/TaskDAO';
+import {Task} from '../../../model/Task';
+import {Category} from '../../../model/Category';
+import {Observable, of} from 'rxjs';
+import {Priority} from '../../../model/Priority';
 
+// реализация работы с задачами в виде массивов
+// все методы DAO возвращают тип Observable, для реактивных возможностей
+// для работы с БД - нужно изменить реализацию каждого метода, чтобы обращался не к массивам, а делал RESTful запрос или напрямую к БД
 export class TaskDAOArray implements TaskDAO {
+    
+    get(id: number): Observable<Task> {
 
+        return of(TestData.tasks.find(task => task.id === id));
+    }
 
     getAll(): Observable<Task[]> {
         return of(TestData.tasks);
     }
-
-    get(id: number): Observable<Task> {
-        return undefined;
-    }
-
 
     add(task: Task): Observable<Task> {
 
@@ -28,11 +30,6 @@ export class TaskDAOArray implements TaskDAO {
         return of(task);
     }
 
-    // находит последний id (чтобы потом вставить новую запись с id, увеличенным на 1) - в реальной БД это происходит автоматически
-    private getLastIdTask(): number {
-        return Math.max.apply(Math, TestData.tasks.map(task => task.id)) + 1;
-    }
-
     delete(id: number): Observable<Task> {
 
         const taskTmp = TestData.tasks.find(t => t.id === id); // удаляем по id
@@ -42,24 +39,18 @@ export class TaskDAOArray implements TaskDAO {
 
     }
 
-    getCompletedCountInCategory(category: Category): Observable<number> {
-        return undefined;
+    update(task: Task): Observable<Task> {
+
+        const taskTmp = TestData.tasks.find(t => t.id === task.id); // обновляем по id
+        TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1, task);
+
+        return of(task);
+
     }
 
-    getTotalCount(): Observable<number> {
-        return undefined;
-    }
-
-    getTotalCountInCategory(category: Category): Observable<number> {
-        return undefined;
-    }
-
-    getUncompletedCountInCategory(category: Category): Observable<number> {
-        return undefined;
-    }
-
-    // поиск задач по параметрам
+    // поиск задач по всем параметрам
     // если значение null - параметр не нужно учитывать при поиске
+    // если searchTaskText == '', то будут возвращаться все значения
     search(category: Category, searchText: string, status: boolean, priority: Priority): Observable<Task[]> {
 
         return of(this.searchTasks(category, searchText, status, priority));
@@ -85,21 +76,40 @@ export class TaskDAOArray implements TaskDAO {
 
         if (searchText != null) {
             allTasks = allTasks.filter(
-              task =>
-                task.title.toUpperCase().includes(searchText.toUpperCase()) // учитываем текст поиска (если '' - возвращаются все значения)
+                task =>
+                    task.title.toUpperCase().includes(searchText.toUpperCase()) // учитываем текст поиска (если '' - возвращаются все значения)
             );
         }
 
         return allTasks;
     }
 
-    update(task: Task): Observable<Task> {
 
-        const taskTmp = TestData.tasks.find(t => t.id === task.id); // обновляем по id
-        TestData.tasks.splice(TestData.tasks.indexOf(taskTmp), 1, task);
-
-        return of(task);
-
+    // находит последний id (чтобы потом вставить новую запись с id, увеличенным на 1) - в реальной БД это происходит автоматически
+    private getLastIdTask(): number {
+        return Math.max.apply(Math, TestData.tasks.map(task => task.id)) + 1;
     }
+
+
+    // кол-во завершенных задач в заданной категории (если category === null, то для всех категорий)
+    getCompletedCountInCategory(category: Category): Observable<number> {
+        return of(this.searchTasks(category, null, true, null).length);
+    }
+
+    // кол-во незавершенных задач в заданной категории (если category === null, то для всех категорий)
+    getUncompletedCountInCategory(category: Category): Observable<number> {
+        return of(this.searchTasks(category, null, false, null).length);
+    }
+
+    // кол-во всех задач в заданной категории (если category === null, то для всех категорий)
+    getTotalCountInCategory(category: Category): Observable<number> {
+        return of(this.searchTasks(category, null, null, null).length);
+    }
+
+    // кол-во всех задач в общем
+    getTotalCount(): Observable<number> {
+        return of(TestData.tasks.length);
+    }
+
 
 }

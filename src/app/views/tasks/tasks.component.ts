@@ -18,9 +18,6 @@ import {OperType} from "../../dialog/OperType";
 })
 export class TasksComponent implements OnInit {
 
-    private dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
-
-
     // ссылки на компоненты таблицы
     @ViewChild(MatPaginator, {static: false}) private paginator: MatPaginator;
     @ViewChild(MatSort, {static: false}) private sort: MatSort;
@@ -47,18 +44,6 @@ export class TasksComponent implements OnInit {
     @Output()
     addTask = new EventEmitter<Task>();
 
-    // поиск
-    private searchTaskText: string; // текущее значение для поиска задач
-    private selectedStatusFilter: boolean = null;   // по-умолчанию будут показываться задачи по всем статусам (решенные и нерешенные)
-    private selectedPriorityFilter: Priority = null;   // по-умолчанию будут показываться задачи по всем приоритетам
-
-
-
-    // поля для таблицы (те, что отображают данные из задачи - должны совпадать с названиями переменных класса)
-    private displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select'];
-
-    private priorities: Priority[]; // список приоритетов (для фильтрации задач)
-    private tasks: Task[];
 
     // текущие задачи для отображения на странице
     @Input('tasks')
@@ -75,9 +60,28 @@ export class TasksComponent implements OnInit {
     @Input()
     selectedCategory: Category;
 
+
+    private dataSource: MatTableDataSource<Task>; // контейнер - источник данных для таблицы
+
+
+    // поиск
+    private searchTaskText: string; // текущее значение для поиска задач
+    private selectedStatusFilter: boolean = null;   // по-умолчанию будут показываться задачи по всем статусам (решенные и нерешенные)
+    private selectedPriorityFilter: Priority = null;   // по-умолчанию будут показываться задачи по всем приоритетам
+
+
+
+    // поля для таблицы (те, что отображают данные из задачи - должны совпадать с названиями переменных класса)
+    private displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'select'];
+
+    private priorities: Priority[]; // список приоритетов (для фильтрации задач)
+    private tasks: Task[];
+
+
+
     constructor(
-      private dataHandler: DataHandlerService, // доступ к данным
-      private dialog: MatDialog, // работа с диалоговым окном
+        private dataHandler: DataHandlerService, // доступ к данным
+        private dialog: MatDialog, // работа с диалоговым окном
 
     ) {
     }
@@ -88,7 +92,9 @@ export class TasksComponent implements OnInit {
 
         // датасорс обязательно нужно создавать для таблицы, в него присваивается любой источник (БД, массивы, JSON и пр.)
         this.dataSource = new MatTableDataSource();
+
         this.onSelectCategory(null);
+
     }
 
 
@@ -111,6 +117,7 @@ export class TasksComponent implements OnInit {
 
     // показывает задачи с применением всех текущий условий (категория, поиск, фильтры и пр.)
     private fillTable(): void {
+
 
         if (!this.dataSource) {
             return;
@@ -191,7 +198,7 @@ export class TasksComponent implements OnInit {
 
 
     // диалоговое окно подтверждения удаления
-    private openDeleteDialog(task: Task) {
+    private openDeleteDialog(task: Task): void {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             maxWidth: '500px',
             data: {
@@ -208,23 +215,23 @@ export class TasksComponent implements OnInit {
         });
     }
 
-    private onToggleStatus(task: Task) {
+    private onToggleStatus(task: Task): void {
         task.completed = !task.completed;
         this.updateTask.emit(task);
     }
 
 
-    private onSelectCategory(category: Category) {
+    private onSelectCategory(category: Category): void {
         this.selectCategory.emit(category);
     }
 
     // фильтрация по названию
-    private onFilterByTitle() {
+    private onFilterByTitle(): void {
         this.filterByTitle.emit(this.searchTaskText);
     }
 
     // фильтрация по статусу
-    private onFilterByStatus(value: boolean) {
+    private onFilterByStatus(value: boolean): void {
 
         // на всякий случай проверяем изменилось ли значение (хотя сам UI компонент должен это делать)
         if (value !== this.selectedStatusFilter) {
@@ -235,7 +242,7 @@ export class TasksComponent implements OnInit {
 
 
     // фильтрация по приоритету
-    private onFilterByPriority(value: Priority) {
+    private onFilterByPriority(value: Priority): void{
 
         // на всякий случай проверяем изменилось ли значение (хотя сам UI компонент должен это делать)
         if (value !== this.selectedPriorityFilter) {
@@ -245,7 +252,7 @@ export class TasksComponent implements OnInit {
     }
 
     // диалоговое окно для добавления задачи
-    private openAddTaskDialog() {
+    private openAddTaskDialog(): void {
 
         // то же самое, что и при редактировании, но только передаем пустой объект Task
         const task = new Task(null, '', false, null, this.selectedCategory);

@@ -18,6 +18,16 @@ export class CategoriesComponent implements OnInit {
     @Input()
     selectedCategory: Category;
 
+    // категории с кол-вом активных задач для каждой из них
+    @Input('categoryMap')
+    set setCategoryMap(categoryMap: Map<Category, number>) {
+        this.selectedCategoryMap = categoryMap;
+    }
+
+    // кол-во невыполненных задач всего
+    @Input()
+    uncompletedTotal: number;
+
 
     // выбрали категорию из списка
     @Output()
@@ -44,10 +54,12 @@ export class CategoriesComponent implements OnInit {
     private indexMouseMove: number;
     private searchCategoryTitle: string; // текущее значение для поиска категорий
 
+    private selectedCategoryMap: Map<Category, number>; // список всех категорий и кол-во активных задач
+
 
     constructor(
-      private dataHandler: DataHandlerService,
-      private dialog: MatDialog, // внедряем MatDialog, чтобы работать с диалоговыми окнами
+        private dataHandler: DataHandlerService,
+        private dialog: MatDialog, // внедряем MatDialog, чтобы работать с диалоговыми окнами
 
 
     ) {
@@ -73,13 +85,13 @@ export class CategoriesComponent implements OnInit {
     }
 
     // сохраняет индекс записи категории, над который в данный момент проходит мышка (и там отображается иконка редактирования)
-    private showEditIcon(index: number) {
+    private showEditIcon(index: number): void {
         this.indexMouseMove = index;
 
     }
 
     // диалоговое окно для редактирования категории
-    private openEditDialog(category: Category) {
+    private openEditDialog(category: Category): void {
         const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
             data: [category.title, 'Редактирование категории', OperType.EDIT],
             width: '400px'
@@ -104,7 +116,7 @@ export class CategoriesComponent implements OnInit {
     }
 
     // диалоговое окно для добавления категории
-    private openAddDialog() {
+    private openAddDialog(): void {
 
         const dialogRef = this.dialog.open(EditCategoryDialogComponent, {
             data: ['', 'Добавление категории', OperType.ADD],
@@ -119,10 +131,10 @@ export class CategoriesComponent implements OnInit {
     }
 
     // поиск категории
-    private search() {
+    private search(): void {
 
 
-        if (this.searchCategoryTitle == null ) {
+        if (this.searchCategoryTitle == null) {
             return;
         }
 

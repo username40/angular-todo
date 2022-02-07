@@ -1,19 +1,23 @@
-import {CategoryDAO} from "../interface/CategoryDAO";
-import {Observable, of} from "rxjs";
-import {Category} from "../../../model/Category";
-import {TestData} from "../../TestData";
+import {CategoryDAO} from '../interface/CategoryDAO';
+import {TestData} from '../../TestData';
+import {Category} from '../../../model/Category';
+import {Observable, of} from 'rxjs';
 
+// реализация работы с приоритетами в виде массивов
+// все методы DAO возвращают тип Observable, для реактивных возможностей
+// для работы с БД - нужно изменить реализацию каждого метода, чтобы обращался не к массивам, а делал RESTful запрос или напрямую к БД
 export class CategoryDAOArray implements CategoryDAO {
 
-
     get(id: number): Observable<Category> {
-        return undefined;
+
+        return of(TestData.categories.find(category => category.id === id));
     }
 
     getAll(): Observable<Category[]> {
+
+        TestData.categories.sort((c1, c2) => c1.title.localeCompare(c2.title)); // по алфавиту
         return of(TestData.categories);
     }
-
 
     add(category: Category): Observable<Category> {
 
@@ -25,11 +29,6 @@ export class CategoryDAOArray implements CategoryDAO {
         TestData.categories.push(category);
 
         return of(category);
-    }
-
-    // находит последний id (чтобы потом вставить новую запись с id, увеличенным на 1) - в реальной БД это происходит автоматически
-    private getLastIdCategory(): number {
-        return Math.max.apply(Math, TestData.categories.map(c => c.id)) + 1;
     }
 
     delete(id: number): Observable<Category> {
@@ -58,14 +57,18 @@ export class CategoryDAOArray implements CategoryDAO {
     }
 
 
+    // находит последний id (чтобы потом вставить новую запись с id, увеличенным на 1) - в реальной БД это происходит автоматически
+    private getLastIdCategory(): number {
+        return Math.max.apply(Math, TestData.categories.map(c => c.id)) + 1;
+    }
+
     // поиск категорий по названию
     search(title: string): Observable<Category[]> {
 
         return of(TestData.categories.filter(
-          cat => cat.title.toUpperCase().includes(title.toUpperCase()))
-        .sort((c1, c2) => c1.title.localeCompare(c2.title)));
+            cat => cat.title.toUpperCase().includes(title.toUpperCase()))
+            .sort((c1, c2) => c1.title.localeCompare(c2.title)));
     }
-
 
 
 }
