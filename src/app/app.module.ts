@@ -32,6 +32,8 @@ import {PrioritiesComponent} from "./views/priorities/priorities.component";
 import {SettingsDialogComponent} from "./dialog/settings-dialog/settings-dialog.component";
 import {ColorPickerModule} from "ngx-color-picker";
 import {EditPriorityDialogComponent} from "./dialog/edit-priority-dialog/edit-priority-dialog.component";
+import {SidebarModule} from "ng-sidebar";
+import {DeviceDetectorModule} from "ngx-device-detector";
 
 registerLocaleData(localeRu);
 
@@ -52,6 +54,7 @@ registerLocaleData(localeRu);
         PrioritiesComponent,
         SettingsDialogComponent,
         EditPriorityDialogComponent
+
     ],
     imports: [
         BrowserModule,
@@ -70,7 +73,9 @@ registerLocaleData(localeRu);
         MatDatepickerModule,
         MatNativeDateModule,
         MatCheckboxModule,
-        ColorPickerModule
+        ColorPickerModule,
+        SidebarModule,
+        DeviceDetectorModule.forRoot()
     ],
     providers: [],
     entryComponents: [

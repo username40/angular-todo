@@ -12,9 +12,9 @@ import {AboutDialogComponent} from "../../dialog/about/about-dialog.component";
 // подвал - нижняя часть страницы
 export class FooterComponent implements OnInit {
     private year: Date;
-    private site = 'https://javabegin.ru/';
-    private blog = 'https://javabegin.ru/blog/tag/angular/';
-    private siteName = 'JavaBegin';
+    private site = '';
+    private blog = '';
+    private siteName = '';
 
     constructor(private dialog: MatDialog) {
     }
@@ -30,7 +30,7 @@ export class FooterComponent implements OnInit {
                 autoFocus: false,
                 data: {
                     dialogTitle: 'О программе',
-                    message: 'Данное приложение было создано для видеокурса "Angular для начинающих" на сайте javabegin.ru'
+                    message: ''
                 },
                 width: '400px'
             });
